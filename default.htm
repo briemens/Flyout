@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+    <title>FlyOut</title>
+    <style type="text/css">
+        /*<![CDATA[*/
+        *
+        {
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica;
+            font-size: 12pt;
+            text-decoration: none;
+            font-style: normal;
+            font-weight: normal;
+            letter-spacing: .1em;
+        }
+        body
+        {
+            padding: 1em;
+        }
+        h1
+        {
+            font-weight: bold;
+            font-size: 14pt;
+        }
+        .iconbar
+        {
+            position: absolute;
+            top: 5em;
+            left: 5em;
+        }
+        .icon
+        {
+            float: left;
+            margin-right: 2em;
+            background-color: Silver;
+            width: 50px;
+            height: 80px;
+            list-style: none none inside;
+            padding: 1em;
+        }
+        .flyout
+        {
+            display: none;
+            position: absolute;
+            padding: 1em;
+            color: Silver;
+            background-color: Gray;
+        }
+        /*]]>*/
+    </style>
+</head>
+<body>
+    <h1>FlyOut 1.0</h1>
+    <ul class="iconbar">
+        <li class="icon">
+            <div class="flyout">
+                FlyOut!</div>
+            <div>
+                Icon 1</div>
+        </li>
+        <li class="icon">
+            <div class="flyout">
+                FlyOut!</div>
+            <div>
+                Icon 2</div>
+        </li>
+    </ul>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="common.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".flyout")
+                .parent()
+                    .mouseenter(function () {
+                        var $flyout = $(".flyout", this);
+
+                        if ($flyout.data("ticket")) {
+                            console.log($flyout.data("ticket"));
+                            clearInterval($flyout.data("ticket"));
+                            clearTimeout($flyout.data("ticket"));
+                            $flyout.data("ticket", null);
+                        }
+
+                        $flyout
+                            .stop(true, true)
+                            .fadeOut(0)
+                            .css("margin-top", "0px")
+                            .fadeIn(1000);
+                    })
+                    .mouseleave(function () {
+                        var $flyout = $(".flyout", this);
+
+                        if ($flyout.data("ticket")) {
+                            return;
+                        }
+
+                        $flyout.fadeIn(0);
+
+                        $flyout.data("ticket", setTimeout(function () {
+
+                            var steps = 1;
+
+                            $flyout.data("ticket", setInterval(function () {
+
+                                if (!$flyout.data("ticket")) {
+                                    return;
+                                }
+
+                                if ($flyout.data("ticket") && steps++ > 100) {
+
+                                    clearInterval($flyout.data("ticket"));
+                                    $flyout.data("ticket", null);
+                                    $flyout.css("margin-top", 0);
+                                    return;
+                                }
+
+                                $flyout.css("margin-top", (steps * 1 * -1) + "px");
+
+
+                            }, 13));
+
+                            $flyout.stop(true, true).fadeOut(1000);
+                            //$(".flyout", that).fadeOut(1000); 
+                        }, 1000));
+                    });
+
+        });
+    </script>
+</body>
+</html>
