@@ -1,6 +1,6 @@
 #Fly Out menu in JavaScript
 
-Flyout tooltip menu in JavaScript
+JQuery Flyout tooltip menu in JavaScript
 
 	See default.htm
 
